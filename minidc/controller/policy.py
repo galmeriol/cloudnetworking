@@ -171,8 +171,23 @@ class StaticPolicy(object):
         #   (Hint: you can look up the port of a neighboring host using
         #           topo.ports[edge switch name][host name]
         #   (Hint: to find a the VLAN, use topo.getVlanCore(vlanId))
-
-        # [ADD YOUR CODE HERE]
+	
+	for edge_switch_name, edge in topo.edgeSwitches.items():
+	    routingTable[edge.dpid] = []
+	    neighbors = edge.neighbors
+	    for host_name, host in topo.hosts.items():
+	        if host_name in neighbors:
+	            assigned_port = topo.ports[edge_switch_name][host_name]
+	        else:
+	            core_switch_name = topo.getVlanCore(host.vlans[0])
+	            assigned_port = topo.ports[edge_switch_name][core_switch_name] # port on edge to core
+	        routingTable[edge.dpid].append({
+                    'eth_dst' : h.eth,
+                    'output' : [assigned_port],
+                    'priority' : 2,
+                    'type' : 'dst'
+                })
+        
 
         return flood.add_arpflood(routingTable, topo)
 
