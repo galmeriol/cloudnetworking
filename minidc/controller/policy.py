@@ -78,9 +78,9 @@ class AdaptivePolicy(object):
         # Use the dictionary self.utilization
         # (key = switch name, value = utilization in bytes)
         # to find the least utilized switch.
-
-        # [REPLACE WITH YOUR CODE]
-        return self.utilization.keys()[0]
+	
+	switches_sorted_by_utilization = sorted(self.utilization, key=self.utilization.get)
+        return switches_sorted_by_utilization[0]
 
     def redistribute(self):
         # we're installing flows by destination, so sort by received
