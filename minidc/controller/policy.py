@@ -182,7 +182,7 @@ class StaticPolicy(object):
 	            core_switch_name = topo.getVlanCore(host.vlans[0])
 	            assigned_port = topo.ports[edge_switch_name][core_switch_name] # port on edge to core
 	        routingTable[edge.dpid].append({
-                    'eth_dst' : h.eth,
+                    'eth_dst' : host.eth,
                     'output' : [assigned_port],
                     'priority' : 2,
                     'type' : 'dst'
